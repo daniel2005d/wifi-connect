@@ -111,10 +111,7 @@ def main(args):
     except:
         interface = supplicant.create_interface(device)
 
-    ssid="wifi-guest"
-
-
-    connect("wifi-guest", interface,supplicant, "OPN")
+    connect(ssid, interface,supplicant, authentication, username=username, password=password, domain=domain)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--ssid", help="AP name", required=True)
