@@ -58,27 +58,31 @@ def connect(ssid, iface, supplicant, authentication, username=None, password=Non
             iface.remove_network(network_path)
 
         # Add target network to the interface and connect to it 
-        iface.add_network(network_params)
-        target_network = iface.get_networks()[0].get_path()
-
-        iface.select_network(target_network)
-        seconds_passed = 0
-        while seconds_passed <= 4.5:
-            try:
-                print(f'\r\033[KConnecting...', end='')
-                state = iface.get_state()
-                if state == "completed":
-                    credentials_valid = 1
+        try:
+            iface.add_network(network_params)
+            target_network = iface.get_networks()[0].get_path()
+            iface.select_network(target_network)
+            seconds_passed = 0
+            
+            while seconds_passed <= 4.5:
+                try:
+                    print(f'\r\033[KConnecting...', end='')
+                    state = iface.get_state()
+                    if state == "completed":
+                        credentials_valid = 1
+                        break
+                except Exception as e:
+                    print(e)
                     break
-            except Exception as e:
-                print(e)
-                break
 
-            time.sleep(0.01)   
-            seconds_passed += 0.01
-        
-        if credentials_valid == 1:
-            print(f'\r\033[KConnected to {ssid}', end='')
+                time.sleep(0.01)   
+                seconds_passed += 0.01
+            
+            if credentials_valid == 1:
+                print(f'\r\033[KConnected to {ssid}', end='')
+                
+        except Exception as e:
+            print(e)
 
 def main(args):
 
